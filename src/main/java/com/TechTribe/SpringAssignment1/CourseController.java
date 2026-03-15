@@ -1,5 +1,6 @@
 package com.TechTribe.SpringAssignment1;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -63,5 +64,21 @@ public class CourseController {
     @GetMapping("/courses/{id}")
     public Course getCourseById(@PathVariable Long id) {
         return courseService.getCourseById(id).orElse(null);
+    }
+    // UPDATE: Modify an existing course [cite: 40]
+    @PutMapping("/courses/{id}")
+    public Course updateCourse(@PathVariable Long id, @RequestBody Course updatedCourse) {
+        return courseService.getCourseById(id).map(course -> {
+            course.setName(updatedCourse.getName());
+            course.setCredits(updatedCourse.getCredits());
+            course.setCategory(updatedCourse.getCategory());
+            return courseService.saveCourse(course);
+        }).orElse(null);
+    }
+
+    // DELETE: Remove a course [cite: 40]
+    @DeleteMapping("/courses/{id}")
+    public void deleteCourse(@PathVariable Long id) {
+        courseService.deleteCourse(id);
     }
 }
