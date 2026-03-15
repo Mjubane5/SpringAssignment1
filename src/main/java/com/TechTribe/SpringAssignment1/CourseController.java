@@ -13,6 +13,9 @@ import java.util.Map;
 @RequestMapping("/api")
 public class CourseController {
 
+    @Autowired
+    private CourseService courseService;
+
     @GetMapping("/courses/info")
     public Map<String, List<String>> getCourseInfo() {
         Map<String, List<String>> departmentCourses = new HashMap<>();
@@ -41,5 +44,24 @@ public class CourseController {
         ));
 
         return departmentCourses;
+
+    }
+
+    // CREATE: Add a new course [cite: 40]
+    @PostMapping("/courses")
+    public Course createCourse(@RequestBody Course course) {
+        return courseService.saveCourse(course);
+    }
+
+    // READ: Get all courses [cite: 40]
+    @GetMapping("/courses")
+    public List<Course> getAllCourses() {
+        return courseService.getAllCourses();
+    }
+
+    // READ: Get a specific course by ID [cite: 40]
+    @GetMapping("/courses/{id}")
+    public Course getCourseById(@PathVariable Long id) {
+        return courseService.getCourseById(id).orElse(null);
     }
 }
