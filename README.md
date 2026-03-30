@@ -37,5 +37,6 @@ Because this project utilizes an in-memory H2 database, no external database ins
 
 1. **Clone the repository:**
    ```bash
-   git clone [Insert Your GitHub Repo Link Here]
+   git clone
+**https://github.com/Mjubane5/SpringAssignment1**
    cd SpringAssignment1
