@@ -1,10 +1,9 @@
 package com.TechTribe.SpringAssignment1;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
+import jakarta.validation.Valid;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
@@ -50,7 +49,7 @@ public class CourseController {
 
     // CREATE: Add a new course [cite: 40]
     @PostMapping("/courses")
-    public Course createCourse(@RequestBody Course course) {
+    public Course createCourse(@Valid @RequestBody Course course) {
         return courseService.saveCourse(course);
     }
 
@@ -67,7 +66,7 @@ public class CourseController {
     }
     // UPDATE: Modify an existing course [cite: 40]
     @PutMapping("/courses/{id}")
-    public Course updateCourse(@PathVariable Long id, @RequestBody Course updatedCourse) {
+    public Course updateCourse(@PathVariable Long id, @Valid  @RequestBody Course updatedCourse) {
         return courseService.getCourseById(id).map(course -> {
             course.setName(updatedCourse.getName());
             course.setCredits(updatedCourse.getCredits());
