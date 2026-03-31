@@ -50,6 +50,7 @@ Once the server states `Tomcat started on port 8080`, you can access the followi
 * **The Web Interface:** `http://localhost:8080`
 * **Interactive API Docs (Swagger):** `http://localhost:8080/swagger-ui.html`
 * **H2 Database Console:** `http://localhost:8080/h2-console`
+<img width="1918" height="1003" alt="image" src="https://github.com/user-attachments/assets/2470891d-69e9-49f7-a884-9287f7c0d5d1" />
 
 ---
 
