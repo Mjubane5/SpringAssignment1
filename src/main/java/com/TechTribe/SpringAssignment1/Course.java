@@ -4,6 +4,8 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotBlank;
 
 @Entity
 public class Course {
@@ -11,8 +13,14 @@ public class Course {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+// Validation constraints added by Ovayo Kani
+    @NotBlank(message = "Course name cannot be empty")
     private String name;
+
+    @Min(value = 1, message = "Credits must be at least 1")
     private int credits;
+
+    @NotBlank(message = "Category is required")
     private String category;
 
     // Constructors

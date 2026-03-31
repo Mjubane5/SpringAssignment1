@@ -1,0 +1,23 @@
+###This should FAIL with a "400 Bad Request"
+POST http://localhost:8080/api/courses
+Content-Type: application/json
+
+{
+    "name": "",
+    "credits": 0,
+    "category": "Undergraduate"
+}
+
+###
+POST http://localhost:8080/api/courses
+Content-Type: application/json
+
+{
+    "name": "CSC415: Penetration Testing",
+    "credits": 15,
+    "category": "Honours"
+}
+
+###
+# You should see the Penetration Testing course you just saved!
+GET http://localhost:8080/api/courses

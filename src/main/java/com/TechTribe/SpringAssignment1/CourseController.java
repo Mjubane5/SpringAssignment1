@@ -1,10 +1,9 @@
 package com.TechTribe.SpringAssignment1;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
+import jakarta.validation.Valid;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
@@ -48,26 +47,27 @@ public class CourseController {
 
     }
 
-    // CREATE: Add a new course [cite: 40]
+    // CREATE: Add a new course
+    // Validation constraints added by Ovayo Kani
     @PostMapping("/courses")
-    public Course createCourse(@RequestBody Course course) {
+    public Course createCourse(@Valid @RequestBody Course course) {
         return courseService.saveCourse(course);
     }
 
-    // READ: Get all courses [cite: 40]
+    // READ: Get all courses
     @GetMapping("/courses")
     public List<Course> getAllCourses() {
         return courseService.getAllCourses();
     }
 
-    // READ: Get a specific course by ID [cite: 40]
+    // READ: Get a specific course by ID
     @GetMapping("/courses/{id}")
     public Course getCourseById(@PathVariable Long id) {
         return courseService.getCourseById(id).orElse(null);
     }
-    // UPDATE: Modify an existing course [cite: 40]
+    // UPDATE: Modify an existing course
     @PutMapping("/courses/{id}")
-    public Course updateCourse(@PathVariable Long id, @RequestBody Course updatedCourse) {
+    public Course updateCourse(@PathVariable Long id, @Valid  @RequestBody Course updatedCourse) {
         return courseService.getCourseById(id).map(course -> {
             course.setName(updatedCourse.getName());
             course.setCredits(updatedCourse.getCredits());
@@ -76,7 +76,7 @@ public class CourseController {
         }).orElse(null);
     }
 
-    // DELETE: Remove a course [cite: 40]
+    // DELETE: Remove a course
     @DeleteMapping("/courses/{id}")
     public void deleteCourse(@PathVariable Long id) {
         courseService.deleteCourse(id);
