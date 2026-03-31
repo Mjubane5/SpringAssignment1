@@ -13,7 +13,7 @@ public class Course {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
+// Validation constraints added by Ovayo Kani
     @NotBlank(message = "Course name cannot be empty")
     private String name;
 
