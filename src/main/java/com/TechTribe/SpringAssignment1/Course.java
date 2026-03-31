@@ -5,6 +5,8 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 import jakarta.validation.constraints.NotBlank;
 
 @Entity
@@ -14,11 +16,13 @@ public class Course {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 // Validation constraints added by Ovayo Kani
-    @NotBlank(message = "Course name cannot be empty")
-    private String name;
+@NotBlank(message = "Course name cannot be empty")
+@Size(min = 5, max = 10, message = "Course name must be between 5 and 10 characters (e.g., CSC 111)")
+private String name;
 
-    @Min(value = 1, message = "Credits must be at least 1")
-    private int credits;
+    @NotNull(message = "Credits cannot be null")
+    @Min(value = 8, message = "Credits must be at least 8")
+    private Integer credits;
 
     @NotBlank(message = "Category is required")
     private String category;

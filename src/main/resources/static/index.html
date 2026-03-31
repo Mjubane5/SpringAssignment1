@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Course Manager</title>
+    <style>
+        /* Modern, clean styling */
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #f4f7f6; color: #333; padding: 40px; display: flex; justify-content: center; }
+        .container { background: white; padding: 30px; border-radius: 10px; box-shadow: 0 5px 15px rgba(0,0,0,0.1); width: 100%; max-width: 800px; }
+        h1 { text-align: center; color: #2c3e50; margin-bottom: 30px; }
+
+        /* Form styling */
+        form { display: flex; gap: 10px; margin-bottom: 30px; }
+        input, select { flex: 1; padding: 12px; border: 1px solid #ddd; border-radius: 5px; outline: none; }
+        button { padding: 12px 20px; background-color: #007bff; color: white; border: none; border-radius: 5px; cursor: pointer; font-weight: bold; transition: 0.3s; }
+        button:hover { background-color: #0056b3; }
+
+        /* Table styling */
+        table { width: 100%; border-collapse: collapse; }
+        th, td { padding: 15px; text-align: left; border-bottom: 1px solid #ddd; }
+        th { background-color: #f8f9fa; color: #2c3e50; }
+        tr:hover { background-color: #f1f1f1; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>🎓 University Course Manager</h1>
+
+    <form id="courseForm">
+        <select id="name" required>
+            <option value="">Select a Course...</option>
+
+            <optgroup label="Foundation Courses">
+                <option value="CSC111">CSC111: Introduction to Computing</option>
+                <option value="CSC112">CSC112: IT Fundamentals</option>
+            </optgroup>
+
+            <optgroup label="Undergraduate Courses">
+                <option value="CSC211">CSC211: Object-Oriented Programming</option>
+                <option value="CSC212">CSC212: Data Structures</option>
+                <option value="CSC311">CSC311: Operating Systems</option>
+                <option value="CSC312">CSC312: Database Systems</option>
+                <option value="CSC313">CSC313: Software Engineering</option>
+            </optgroup>
+
+            <optgroup label="Honours Courses">
+                <option value="CSC411">CSC411: Advanced Artificial Intelligence</option>
+                <option value="CSC412">CSC412: Cyber Security</option>
+                <option value="CSC413">CSC413: Parallel Computing</option>
+                <option value="CSC414">CSC414: Research Methodology</option>
+            </optgroup>
+        </select>
+
+        <select id="credits" required>
+            <option value="">Credits...</option>
+            <option value="8">8 Credits</option>
+            <option value="12">12 Credits</option>
+            <option value="16">16 Credits</option>
+        </select>
+
+        <select id="category" required>
+            <option value="">Category...</option>
+            <option value="Foundation">Foundation</option>
+            <option value="Undergraduate">Undergraduate</option>
+            <option value="Honours">Honours</option>
+        </select>
+
+        <button type="submit">Add Course</button>
+    </form>
+
+    <table>
+        <thead>
+        <tr>
+            <th>ID</th>
+            <th>Course Name</th>
+            <th>Credits</th>
+            <th>Category</th>
+        </tr>
+        </thead>
+        <tbody id="courseTableBody">
+        </tbody>
+    </table>
+</div>
+
+<script>
+    const API_URL = '/api/courses';
+
+    // --- NEW: Smart Auto-Fill Logic ---
+    const courseDropdown = document.getElementById('name');
+    const categoryDropdown = document.getElementById('category');
+
+    courseDropdown.addEventListener('change', (e) => {
+        const courseCode = e.target.value;
+
+        // Auto-select the correct category based on the course number!
+        if (courseCode.startsWith('CSC1')) {
+            categoryDropdown.value = 'Foundation';
+        } else if (courseCode.startsWith('CSC2') || courseCode.startsWith('CSC3')) {
+            categoryDropdown.value = 'Undergraduate';
+        } else if (courseCode.startsWith('CSC4')) {
+            categoryDropdown.value = 'Honours';
+        } else {
+            categoryDropdown.value = '';
+        }
+
+        // Lock the category dropdown so the user cannot change it manually
+        categoryDropdown.style.backgroundColor = "#e9ecef";
+        categoryDropdown.style.pointerEvents = "none";
+    });
+    // -----------------------------------
+
+    // 1. Fetch all courses from your database when the page loads
+    async function loadCourses() {
+        const response = await fetch(API_URL);
+        const courses = await response.json();
+        const tableBody = document.getElementById('courseTableBody');
+        tableBody.innerHTML = ''; // Clear existing rows
+
+        courses.forEach(course => {
+            const row = `<tr>
+                                <td>${course.id}</td>
+                                <td><strong>${course.name}</strong></td>
+                                <td>${course.credits}</td>
+                                <td>${course.category}</td>
+                             </tr>`;
+            tableBody.innerHTML += row;
+        });
+    }
+
+    // 2. Send new data to your database when the form is submitted
+    document.getElementById('courseForm').addEventListener('submit', async (e) => {
+        e.preventDefault(); // Prevent page reload
+
+        const newCourse = {
+            name: document.getElementById('name').value,
+            credits: parseInt(document.getElementById('credits').value),
+            category: document.getElementById('category').value
+        };
+
+        const response = await fetch(API_URL, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(newCourse)
+        });
+
+        if (response.ok) {
+            document.getElementById('courseForm').reset(); // Clear the form
+
+            // Reset the locked category box back to normal after submitting
+            categoryDropdown.style.backgroundColor = "white";
+            categoryDropdown.style.pointerEvents = "auto";
+
+            loadCourses(); // Refresh the table
+        } else {
+            alert("Validation Failed! Check your backend constraints.");
+        }
+    });
+
+    // Load courses immediately when you open the page
+    loadCourses();
+</script>
+
+</body>
+</html>
