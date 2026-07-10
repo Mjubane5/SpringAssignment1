@@ -5,7 +5,7 @@
 [![Database: H2](https://img.shields.io/badge/Database-H2_In--Memory-4479A1?style=for-the-badge&logo=database)](https://h2database.com/)
 
 ### 📖 Project Overview
-This project is a fully functional, full-stack Spring Boot REST API developed for our **CSC313: Object-Oriented Programming (Assignment 1)** module. It serves as a backend system for managing university modules, built with industry-standard architecture, strict data validation, and a dynamic frontend interface.
+This project is a fully functional, full-stack Spring Boot REST API designed to serve as a centralized backend system for managing institutional academic records. Built with industry-standard enterprise architecture, the application features strict payload validation, robust RESTful endpoints, and a dynamic frontend interface to ensure seamless and secure data management.
 
 ---
 
